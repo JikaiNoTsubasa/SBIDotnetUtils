@@ -1,0 +1,68 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+            "label": "Nuget - 01 - Clean",
+            "type": "shell",
+            "command": "Remove-item",
+            "args": [
+                "${workspaceFolder}/SBIDotnetUtils/bin",
+                "-recurse",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Nuget - 02 - API Pack",
+            "type": "process",
+            "dependsOn": "Nuget - 01 - Clean",
+            "command": "dotnet",
+            "args": [
+                "pack",
+                "${workspaceFolder}/SBIDotnetUtils/SBIDotnetUtils.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Nuget - 03 - Publish nuget",
+            "command": "dotnet",
+            "type": "shell",
+            "dependsOn": ["Nuget - 02 - API Pack"],
+            "options": {
+                "cwd": "${workspaceFolder}/SBIDotnetUtils/bin/Release/"
+            },
+            "args": [
+                "nuget", "push",
+                "**/*.nupkg",
+                "-s", "nuget.org", 
+                "-k", "${input:api_key}",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Nuget - 04 - Publish force nuget",
+            "command": "dotnet",
+            "type": "shell",
+            "dependsOn": ["Nuget - 02 - API Pack"],
+            "options": {
+                "cwd": "${workspaceFolder}/SBIDotnetUtils/bin/Release/"
+            },
+            "args": [
+                "nuget", "push",
+                "**/*.nupkg",
+                "-s", "nuget.org", 
+                "-k", "${input:api_key}",
+                "--skip-duplicate"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+	],
+	// ========== INPUTS ========================
+    "inputs": [
+    // ----- ef ------
+    {
+      "id": "api_key",
+      "type": "promptString",
+      "description": "API Key"
+    }
+  ]
+}
