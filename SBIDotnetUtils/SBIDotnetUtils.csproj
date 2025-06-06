@@ -7,7 +7,7 @@
 
     <Title>SBI Dotnet Utils</Title>
     <PackageId>SBIDotnetUtils</PackageId>
-    <version>8.0.1</version>
+    <version>8.0.2</version>
     <Authors>Stéphane BIEHLER HERTZOG</Authors>
     <Company>Triedge</Company>
     <Description>This is a generic library for SBI Utils.</Description>
